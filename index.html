@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Wishlist</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <header class="top-section">
+
+        <h1 id="title">Wishlist</h1>
+
+        <div class="language-buttons">
+
+            <a href="?lang=en">
+                🇬🇧 English
+            </a>
+
+            <a href="?lang=ru">
+                🇷🇺 Русский
+            </a>
+
+        </div>  
+
+    </header>
+
+    <main class="wishlist-section">
+
+        <button id="add-button">+</button>
+
+        <div id="add-popup" class="popup hidden">
+
+            <div class="popup-content">
+
+                <button id="close-popup" class="close-button">
+                    ×
+                </button>
+
+
+                <div class="input-row">
+
+                    <label id="item-label" for="item-input">
+                        Item
+                    </label>
+
+                    <input
+                        type="text"
+                        id="item-input"
+                    >
+
+                </div>
+
+
+                <div class="input-row">
+
+                    <label id="link-label" for="link-input">
+                        Link
+                    </label>
+
+                    <input
+                        type="url"
+                        id="link-input"
+                    >
+
+                </div>
+
+
+                <div class="favourite-row">
+
+                    <label id="favourite-label" for="favourite-input">
+                        Favourite
+                    </label>
+
+                    <input
+                        type="checkbox"
+                        id="favourite-input"
+                    >
+
+                </div>
+
+
+                    <button id="confirm-add">
+                        Add
+                    </button>
+
+            </div>
+
+        </div>
+
+        <div id="wishlist-container">
+            <!-- JavaScript will put the wishlist cards here -->
+        </div>
+
+    </main>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
