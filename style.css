@@ -357,8 +357,8 @@ body {
     }
 
 
-    .add-button {
-        top: -10px;
+    #add-button {
+        top: 15px;
     }
 
 
