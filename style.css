@@ -357,8 +357,8 @@ body {
     }
 
 
-    .input-row {
-        gap: 15px;
+    .add-button {
+        top: -10px;
     }
 
 
