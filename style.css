@@ -56,23 +56,6 @@ body {
     cursor: pointer;
 }
 
-@media (max-width: 600px) {
-
-    .top-section {
-        height: 300px;
-    }
-
-    #title {
-        font-size: 48px;
-    }
-
-    .language-buttons {
-        right: 15px;
-        bottom: 15px;
-    }
-
-}
-
 .wishlist-section {
     position: relative;
 
@@ -349,6 +332,23 @@ body {
 }
 
 @media (max-width: 600px) {
+
+    .top-section {
+        height: 200px;
+    }
+
+    #title {
+        font-size: 48px;
+    }
+
+    .language-buttons {
+        right: 15px;
+        bottom: 15px;
+    }
+
+    .wishlist-container {
+        margin-top: 10px;
+    }
 
     .popup-content {
         width: 94%;

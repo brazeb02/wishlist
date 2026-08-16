@@ -332,6 +332,25 @@ closePopup.addEventListener("click", () => {
 
 });
 
+document.addEventListener("click", (event) => {
+
+    if (
+        !event.target.closest(".item-menu") &&
+        !event.target.closest(".menu-button")
+    ) {
+
+        document
+            .querySelectorAll(".item-menu.visible")
+            .forEach((menu) => {
+
+                menu.classList.remove("visible");
+
+            });
+
+    }
+
+});
+
 const itemLabel =
     document.querySelector("#item-label");
 
