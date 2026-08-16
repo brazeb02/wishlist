@@ -1,7 +1,38 @@
+const supabaseUrl =
+    "https://pigluavczwmcqavlwguf.supabase.co";
+
+const supabaseKey =
+    "sb_publishable_hhCBM9JacULXYTTO_1Sdxg_uxYyppYy";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        supabaseUrl,
+        supabaseKey
+    );
+
+async function testDatabase() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("wishlist")
+            .select("*");
+
+
+    console.log(data);
+
+    console.log(error);
+
+}
+
+
+testDatabase();
+
 class WishlistItem {
 
-    constructor(description, link, type = "default") {
+    constructor(id, description, link, type = "default") {
 
+        this.id = id;
         this.description = description;
         this.link = link;
         this.type = type;
@@ -10,31 +41,43 @@ class WishlistItem {
 
 }
 
-const wishlist = [
+async function loadWishlist() {
 
-    new WishlistItem(
-        "Sony WH-1000XM6 headphones",
-        "https://example.com",
-        "favourite"
-    ),
+    const { data, error } =
+        await supabaseClient
+            .from("wishlist")
+            .select("*");
 
-    new WishlistItem(
-        "The Name of the Rose",
-        "https://example.com"
-    ),
 
-    new WishlistItem(
-        "A nice coffee",
-        "https://example.com",
-        "favourite"
-    ),
+    if (error) {
 
-    new WishlistItem(
-        "A board game",
-        "https://example.com"
-    )
+        console.error(
+            "Error loading wishlist:",
+            error
+        );
 
-];
+        return;
+
+    }
+
+
+    wishlist = data.map((item) => {
+
+    return new WishlistItem(
+        item.id,
+        item.description,
+        item.link,
+        item.type
+    );
+
+});
+
+
+    displayWishlist();
+
+}
+
+let wishlist = [];
 
 function displayWishlist() {
 
@@ -93,6 +136,127 @@ function createCard(item) {
 
     menuButton.textContent = "⋮";
 
+    const menu =
+        document.createElement("div");
+
+    menu.classList.add("item-menu");
+
+    menuButton.addEventListener("click", () => {
+
+        const allMenus =
+            document.querySelectorAll(".item-menu");
+
+        allMenus.forEach((otherMenu) => {
+
+            if (otherMenu !== menu) {
+
+                otherMenu.classList.remove("visible");
+
+            }
+
+        });
+
+
+    menu.classList.toggle("visible");
+
+    });
+
+
+    const deleteButton =
+        document.createElement("button");
+
+    deleteButton.classList.add("menu-option");
+
+    deleteButton.textContent =
+        language === "ru"
+            ? "Удалить"
+            : "Delete";
+
+    deleteButton.addEventListener("click", async () => {
+
+        const { error } =
+            await supabaseClient
+                .from("wishlist")
+                .delete()
+                .eq("id", item.id);
+
+
+        if (error) {
+
+            console.error(
+                "Error deleting wishlist item:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        await loadWishlist();
+
+    });        
+
+
+    const favouriteButton =
+        document.createElement("button");
+
+    favouriteButton.classList.add("menu-option");
+
+
+    if (item.type === "favourite") {
+
+        favouriteButton.textContent =
+            language === "ru"
+                ? "Убрать из фаворитов"
+                : "Remove from favourites";
+
+    } else {
+
+        favouriteButton.textContent =
+            language === "ru"
+                ? "Добавить в фавориты"
+                : "Add to favourites";
+
+    }
+
+    favouriteButton.addEventListener("click", async () => {
+
+        const newType =
+            item.type === "favourite"
+                ? "default"
+                : "favourite";
+
+
+        const { error } =
+            await supabaseClient
+                .from("wishlist")
+                .update({
+                    type: newType
+                })
+                .eq("id", item.id);
+
+
+        if (error) {
+
+            console.error(
+                "Error changing wishlist item type:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        await loadWishlist();
+
+    });
+
+
+    menu.appendChild(deleteButton);
+
+    menu.appendChild(favouriteButton);
 
     const description =
         document.createElement("div");
@@ -120,6 +284,7 @@ function createCard(item) {
 
     card.appendChild(link);
 
+    card.appendChild(menu);
 
     return card;
 
@@ -179,6 +344,74 @@ const favouriteLabel =
 const confirmAdd =
     document.querySelector("#confirm-add");
 
+confirmAdd.addEventListener("click", async () => {
+
+    if (itemInput.value.trim() === "") {
+
+        return;
+
+    }
+
+
+    const description =
+        itemInput.value.trim();
+
+    const link =
+        linkInput.value.trim();
+
+    const type =
+        favouriteInput.checked
+            ? "favourite"
+            : "default";
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("wishlist")
+            .insert([
+                {
+                    description: description,
+                    link: link,
+                    type: type
+                }
+            ])
+            .select()
+            .single();
+
+
+    if (error) {
+
+        console.error(
+            "Error adding wishlist item:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    const newItem =
+        new WishlistItem(
+            data.id,
+            data.description,
+            data.link,
+            data.type
+        );
+
+
+    wishlist.push(newItem);
+
+    displayWishlist();
+
+
+    itemInput.value = "";
+
+    linkInput.value = "";
+
+    favouriteInput.checked = false;
+
+});
 
 if (language === "ru") {
 
@@ -199,3 +432,5 @@ if (language === "ru") {
     confirmAdd.textContent = "Add";
 
 }
+
+loadWishlist();

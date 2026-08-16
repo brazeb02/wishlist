@@ -101,6 +101,10 @@ body {
     cursor: pointer;
 }
 
+#add-button:hover {
+    background: #cccccc;
+}
+
 #wishlist-container {
     display: flex;
     flex-direction: column;
@@ -178,7 +182,7 @@ body {
 }
 
 .menu-button:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: #eeeeee;
 
     border-radius: 50%;
 }
@@ -293,6 +297,57 @@ body {
     cursor: pointer;
 }
 
+#confirm-add:hover {
+    background: #cccccc;
+}
+
+.item-menu {
+    position: absolute;
+
+    top: 45px;
+    right: 10px;
+
+    width: 210px;
+
+    display: none;
+
+    background: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    overflow: hidden;
+
+    z-index: 10; 
+}
+
+.item-menu.visible {
+    display: block;
+}
+
+.menu-option {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px 15px;
+
+    border: none;
+
+    background: white;
+
+    text-align: left;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.menu-option:hover {
+    background: #eeeeee;
+}
+
 @media (max-width: 600px) {
 
     .popup-content {
@@ -309,6 +364,16 @@ body {
 
     .input-row label {
         width: 55px;
+    }
+
+    .item-menu {
+        width: 190px;
+    }
+
+    .menu-option {
+        padding: 14px 15px;
+
+        font-size: 15px;
     }
 
 }
